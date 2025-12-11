@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
 	"log"
 	"os"
@@ -27,6 +28,9 @@ const (
 	path_technology         = "/sys/class/power_supply/BAT1/technology"
 	path_ac_online          = "/sys/class/power_supply/ACAD/online"
 )
+
+//go:embed version
+var version string
 
 type tickMsg time.Time
 
@@ -181,6 +185,12 @@ func readBatteryData() batteryData {
 func battery() error {
 	log.SetFlags(0)
 	log.SetOutput(os.Stdout)
+
+	switch os.Args[1] {
+	case "version", "--version", "-v":
+		fmt.Printf("%s\n", strings.TrimSpace(version))
+		return nil
+	}
 
 	// Read initial battery data
 	data := readBatteryData()

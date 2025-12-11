@@ -186,7 +186,13 @@ func battery() error {
 	log.SetFlags(0)
 	log.SetOutput(os.Stdout)
 
-	switch os.Args[1] {
+	var firstArg string = ""
+
+	if len(os.Args) >= 2 {
+		firstArg = os.Args[1]
+	}
+
+	switch firstArg {
 	case "version", "--version", "-v":
 		fmt.Printf("%s\n", strings.TrimSpace(version))
 		return nil
